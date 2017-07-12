@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 
@@ -65,26 +66,55 @@ public class FileParcer {
 		return confFilesList;
 	}
 	
-	public void chooseConfFile(String fileName)throws IOException{
+	public void chooseConfFile(String chosenFileName){
 		//TODO Вставить проверку наличия введённого имени файла в списке confFilesList
+		this.chosenFile = chosenFileName;
+	}
+	
+	public void parseConfFile()throws IOException{
 		InputStream confFileIS = null;
 		InputStreamReader confFileReader = null;
 		BufferedReader buffFileReader = null;
+		//TODO Вставить проверку отсутствия выбранного файла
+		
 		
 		try {
 			String tempStr;
-			confFile = new File(confFilePath + "/" + fileName);
+			String splittedStr[];
+			confFile = new File(confFilePath + "/" + chosenFile);
 			confFileIS = new FileInputStream(confFile);
 			confFileReader = new InputStreamReader(confFileIS,Charset.forName("UTF-8"));
 			buffFileReader = new BufferedReader(confFileReader);
+			int confBlockListIndex = 0;
 			
+			Pattern confOper = Pattern.compile("\\{|\\}");
+			
+			confBlockList.clear();
 			while ((tempStr = buffFileReader.readLine()) != null){
-				System.out.println(tempStr);
+				if (tempStr.equals("BLOCK")){
+					tempStr = buffFileReader.readLine();
+					if (!tempStr.equals("/n")){
+						confBlockList.add(new ConfBlock(tempStr));
+						confBlockListIndex = confBlockList.size() - 1;
+						continue;
+					}
+					else{
+						confBlockList.add(new ConfBlock());
+						confBlockListIndex = confBlockList.size() - 1;
+						continue;
+					}
+				}
+				
+				splittedStr = confOper.split(tempStr);
+				confBlockList.get(confBlockListIndex).addNewLine();
+				for (String strIter : splittedStr){
+					confBlockList.get(confBlockListIndex).addNewOperator(strIter);
+				}
 			}
 			
 		} catch (Exception e) {
 			//Ловим исключение, пишем сообщение, где оно произошло, и кидаем его дальше вверх
-			throw new IOException("Error during parcing file" + fileName, e);
+			throw new IOException("Error during parcing file " + chosenFile, e);
 		} finally {
 			//Если был косяк во время парсинга, закрываем InputStream, если он был открыт. 
 			if (confFileIS != null){
@@ -96,9 +126,13 @@ public class FileParcer {
 				}
 			}
 		}
-		
-		
-		
+	}
+	
+	public List<ConfBlock> getParsedConf(){
+		if (confBlockList == null){
+			throw new RuntimeException("Configuration file was not parsed!");
+		}
+		return confBlockList;
 	}
 	
 	public static void main(String[] args) {
@@ -109,7 +143,8 @@ public class FileParcer {
 		try {
 			tfp = new FileParcer("e:/Saves");
 			tfp.scanConfFileFolder();
-			tfp.chooseConfFile("test.txt");
+			tfp.chooseConfFile("D-Link DES-3526.txt");
+			tfp.parseConfFile();
 			System.out.println(tfp.showCurrentFilePath());
 			System.out.println(tfp.showFilesInConfDirectory());
 		} catch (Exception e) {
