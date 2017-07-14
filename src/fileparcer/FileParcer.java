@@ -1,3 +1,4 @@
+package fileparcer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import sharedres.ConfBlock;
 
 
 
