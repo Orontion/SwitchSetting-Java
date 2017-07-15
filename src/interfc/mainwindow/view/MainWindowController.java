@@ -6,13 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 
 public class MainWindowController {
 	@FXML
 	private ComboBox<String> cmbConfFileSelect;
 	
-	private ObservableList<String> confFileObsList;
+	@FXML
+	private TableView<String> tableVlanStg;
 	
+	private ObservableList<String> confFileObsList;
 	
 	public void startForm(List<String> confFileList){
 		confFileObsList = FXCollections.observableArrayList();
