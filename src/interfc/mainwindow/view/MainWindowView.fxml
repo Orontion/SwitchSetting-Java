@@ -118,33 +118,33 @@
                   <Label text="VLAN" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
                   <Label text="Tagged ports" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
                   <Label text="Untagged ports" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-                  <TextField GridPane.rowIndex="1">
+                  <TextField fx:id="txtVlanName" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="txtVlanTgd" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <TextField fx:id="txtVlanUtgd" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <CheckBox mnemonicParsing="false" text="Control" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <CheckBox fx:id="chkbxIsControl" mnemonicParsing="false" text="Control" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></CheckBox>
                </children>
             </GridPane>
-            <TableView prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="tableVlanStg" prefHeight="200.0" prefWidth="600.0">
               <columns>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="VLAN" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Tagged ports" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Untagged ports" />
-                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Control" />
+                <TableColumn fx:id="colVlanName" editable="false" prefWidth="75.0" sortable="false" text="VLAN" />
+                <TableColumn fx:id="colVlanTgd" editable="false" prefWidth="75.0" sortable="false" text="Tagged ports" />
+                  <TableColumn fx:id="colVlanUtgd" editable="false" prefWidth="75.0" sortable="false" text="Untagged ports" />
+                  <TableColumn fx:id="colVlanIsControl" editable="false" prefWidth="75.0" sortable="false" text="Control" />
               </columns>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
@@ -169,7 +169,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                  <Button mnemonicParsing="false" onMouseClicked="#addVlanToTable" text="Добавить" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
