@@ -2,9 +2,12 @@ package interfc.mainwindow.view;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -15,6 +18,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class MainWindowController {
 	@FXML
 	private ComboBox<String> cmbConfFileSelect;
+	
+	@FXML
+	private TextField txtIP;
+	
+	@FXML
+	private TextField txtNetmask;
 	
 	@FXML
 	private TextField txtVlanName;
@@ -43,26 +52,25 @@ public class MainWindowController {
 	@FXML
 	private TableColumn<VlanContainer, Boolean> colVlanIsControl;
 	
+	@FXML
+	private Button butDeleteRow;
+	
 	private ObservableList<VlanContainer> vlanList;
 	
-	private ObservableList<String> confFileObsList;
+	private ObservableList<String> confFileObsList; 
 	
 	@FXML
 	private void initialize(){
-		vlanList = FXCollections.observableArrayList();
+		//Инициализация объектов для хранения данных
+		vlanList = FXCollections.observableArrayList();				//Объект с данными о VLAN
+		confFileObsList = FXCollections.observableArrayList();		//Список файлов конфигурации
 		
+		//Инициализация полей таблицы для отображения данных о VLAN
 		colVlanName.setCellValueFactory(new PropertyValueFactory<VlanContainer,String>("vlanName"));
 		colVlanTgd.setCellValueFactory(new PropertyValueFactory<VlanContainer,String>("vlanTagged"));
 		colVlanUtgd.setCellValueFactory(new PropertyValueFactory<VlanContainer,String>("vlanUntagged"));
 		colVlanIsControl.setCellValueFactory(new PropertyValueFactory<VlanContainer,Boolean>("vlanIsControl"));
 		tableVlanStg.setItems(vlanList);
-		
-	}
-	
-	public void startForm(List<String> confFileList){
-		confFileObsList = FXCollections.observableArrayList();
-		
-		this.fillCmbConfFileSelect(confFileList);
 		
 		cmbConfFileSelect.setItems(confFileObsList);
 	}
@@ -78,13 +86,95 @@ public class MainWindowController {
 //		if (txtVlanName.textProperty().isEmpty().get()){
 //			txtVlanName.setText("Works!");
 //		}
-		vlanList.add(new VlanContainer(txtVlanName.getText(), 
-										txtVlanName.getText(), 
-										txtVlanName.getText(), 
-										chkbxIsControl.isSelected()));
+		if (vlanInputCheck()){
+			vlanList.add(new VlanContainer(txtVlanName.getText(), 
+											txtVlanTgd.getText(), 
+											txtVlanUtgd.getText(), 
+											chkbxIsControl.isSelected()));
+			txtVlanName.clear();
+			txtVlanTgd.clear();
+			txtVlanUtgd.clear();
+			chkbxIsControl.setSelected(false);
+		}
 	}
 	
-//	private void addDataToVlanCont(String newVlanName, String newVlanTgd, String newVlanUtgd, Boolean newVlanIsCtrl){
-//		
-//	}
+	@FXML
+	private void butDeleteActivation(){
+		//TODO Активация кнопки удаления не только при щелчке мыши
+		if (tableVlanStg.getSelectionModel().getSelectedIndex() != -1){
+			butDeleteRow.setDisable(false);
+		}
+	}
+	
+	@FXML
+	private void deleteRow(){
+		vlanList.remove(tableVlanStg.getSelectionModel().getSelectedIndex());
+		tableVlanStg.getSelectionModel().clearSelection();
+		butDeleteRow.setDisable(true);
+	}
+	
+	@FXML
+	private void clearAll(){
+		if (JOptionPane.showConfirmDialog(null,"Подтверждение", "Очистить все настройки?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+			txtIP.clear();
+			txtNetmask.clear();
+			txtVlanName.clear();
+			txtVlanTgd.clear();
+			txtVlanUtgd.clear();
+			chkbxIsControl.setSelected(false);
+			vlanList.clear();
+			butDeleteRow.setDisable(true);
+		}
+	}
+	
+	//Функция для проверки корректности вводимого VLAN
+	private Boolean vlanInputCheck(){
+		//Проверка имени VLAN
+		if (txtVlanName.getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Не введен номер VLAN!");
+			return false;
+		}
+		
+		//Проверка корректности ввода в поле имени VLAN
+		int TestInt = 0;
+		try {
+			TestInt = Integer.parseInt(txtVlanName.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "VLAN должен быть числом в диапазоне от 0 до 65535!");
+			return false;
+		}
+		
+		if (TestInt < 0 || TestInt > 65535){
+			JOptionPane.showMessageDialog(null, "VLAN должен быть числом в диапазоне от 0 до 65535!");
+			return false;
+		}
+		
+		//Проверка повторяющихся VLAN
+		for (VlanContainer tmpCont : vlanList){
+			if (txtVlanName.getText().equals(tmpCont.getVlanName())){
+				JOptionPane.showMessageDialog(null, "Нельзя вводить повторяющиеся VLAN!");
+				return false;
+			}
+		}
+		
+		//Проверка, создаваемый VLAN имеет настроенные порты
+		if (txtVlanTgd.getText().isEmpty() && txtVlanUtgd.getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Должен быть настроен хотя бы один тэгированный или нетэгированный порт!");
+			return false;
+		}
+		
+		//Проверка попытки ввести второй управляющий VLAN
+		if (chkbxIsControl.isSelected()){
+			for (VlanContainer tmpCont : vlanList){
+				if (tmpCont.getVlanIsControl()){
+					JOptionPane.showMessageDialog(null, "Можно настроить только один управляющий VLAN!");
+					return false;
+				}
+			}
+		}
+		
+		//TODO Парсер портов
+		return true;
+	}
 }
+

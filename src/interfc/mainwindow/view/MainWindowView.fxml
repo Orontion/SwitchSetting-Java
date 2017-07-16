@@ -36,7 +36,7 @@
                   <MenuItem mnemonicParsing="false" text="Добавить" />
               <MenuItem mnemonicParsing="false" text="Удалить" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Сбросить всё" />
+                  <MenuItem mnemonicParsing="false" onAction="#clearAll" text="Сбросить всё" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Помощь">
@@ -86,12 +86,12 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField GridPane.columnIndex="1">
+                  <TextField fx:id="txtIP" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField GridPane.columnIndex="3">
+                  <TextField fx:id="txtNetmask" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
@@ -139,7 +139,7 @@
                      </GridPane.margin></CheckBox>
                </children>
             </GridPane>
-            <TableView fx:id="tableVlanStg" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="tableVlanStg" onMouseClicked="#butDeleteActivation" prefHeight="200.0" prefWidth="600.0">
               <columns>
                 <TableColumn fx:id="colVlanName" editable="false" prefWidth="75.0" sortable="false" text="VLAN" />
                 <TableColumn fx:id="colVlanTgd" editable="false" prefWidth="75.0" sortable="false" text="Tagged ports" />
@@ -164,7 +164,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Сбросить всё">
+                  <Button mnemonicParsing="false" onAction="#clearAll" text="Сбросить всё">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
@@ -174,7 +174,7 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button disable="true" mnemonicParsing="false" text="Удалить" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
+                  <Button fx:id="butDeleteRow" disable="true" mnemonicParsing="false" onAction="#deleteRow" text="Удалить" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                      <GridPane.margin>
                         <Insets right="20.0" />
                      </GridPane.margin>
