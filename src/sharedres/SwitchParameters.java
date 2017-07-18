@@ -75,8 +75,10 @@ public class SwitchParameters {
 			catch (NumberFormatException e){
 				throw new RuntimeException("Wrong number of ports input!", e);
 			}
+			break;
 		case "SUCCESS":
 			this.setSuccessPhrase(params[1]);
+			break;
 		case "SPEED":
 			try{
 				int tmpSpeed = Integer.parseInt(params[1]);
@@ -85,6 +87,7 @@ public class SwitchParameters {
 			catch (NumberFormatException e){
 				throw new RuntimeException("Wrong serial port speed input!", e);
 			}
+			break;
 		default:
 			throw new RuntimeException("Can't find such switch parameters category: " + params[0]);
 		}

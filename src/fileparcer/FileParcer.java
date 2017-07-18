@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import sharedres.ConfBlock;
+import sharedres.SwitchParameters;
 
 
 
@@ -26,6 +27,8 @@ public class FileParcer {
 	private String chosenFile;
 	//Массив прочитанных конф-блоков
 	private List<ConfBlock> confBlockList = new ArrayList<>();
+	//Объект с прочитанными параметрами свитча
+	private SwitchParameters readedSwParams = new SwitchParameters();
 
 	//Объекты для взаимодействия с файлами и папками
 	private File confFileDir;
@@ -100,6 +103,18 @@ public class FileParcer {
 			
 			confBlockList.clear();
 			while ((tempStr = buffFileReader.readLine()) != null){
+				if(tempStr.equals("SWITCHPARAM")){
+					tempStr = buffFileReader.readLine();
+					while (!tempStr.equals("END")){
+						splittedStr = confOper.split(tempStr);
+						readedSwParams.readParamLine(splittedStr);
+						tempStr = buffFileReader.readLine();
+					}
+					//TODO Убрать подгонку под файл, придумать нормальное разграничение и чтение блоков из файла
+					tempStr = buffFileReader.readLine();
+					continue;
+				}
+				
 				if (tempStr.equals("BLOCK")){
 					tempStr = buffFileReader.readLine();
 					if (!tempStr.equals("/n")){
@@ -122,6 +137,10 @@ public class FileParcer {
 			}
 			
 		} catch (Exception e) {
+			//Cброс всех прочитанных параметров к начальным значениям
+			confBlockList.clear();
+			readedSwParams.resetAll();
+			
 			//Ловим исключение, пишем сообщение, где оно произошло, и кидаем его дальше вверх
 			throw new IOException("Error during parcing file " + chosenFile, e);
 		} finally {
@@ -142,6 +161,10 @@ public class FileParcer {
 			throw new RuntimeException("Configuration file was not parsed!");
 		}
 		return confBlockList;
+	}
+	
+	public SwitchParameters getSwitchParameters(){
+		return readedSwParams;
 	}
 	
 	public static void main(String[] args) {
