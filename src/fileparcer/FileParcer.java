@@ -11,43 +11,49 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import sharedres.ConfBlock;
+import sharedres.SwitchParameters;
 
 
 
 public class FileParcer {
-	//Константа, в которой сохранен путь к файлам конфигурирования по умолчанию - путь к файлам приложения
-	public static final String DEFAULT_FILE_PATH = System.getProperty("user.dir");
+	//Константа, в которой сохранен путь к папке с файлами конфигурирования по умолчанию - путь к папке приложения
+	public static final String DEFAULT_CONF_DIR_PATH = System.getProperty("user.dir");
 	
-	
-	
-	private String confFilePath;
+	//Строка с адресом папки файлов конфигурирования
+	private String confDirPath;
+	//Список конф-файлов в папке в виде их имён
 	private List<String> confFilesList = new ArrayList<>();
-	private List<ConfBlock> confBlockList = new ArrayList<>();
+	//Строка с именем выбранного конф-файла
 	private String chosenFile;
-	
+	//Массив прочитанных конф-блоков
+	private List<ConfBlock> confBlockList = new ArrayList<>();
+	//Объект с прочитанными параметрами свитча
+	private SwitchParameters readedSwParams = new SwitchParameters();
+
+	//Объекты для взаимодействия с файлами и папками
 	private File confFileDir;
 	private File confFile;
 	
-	
 	public FileParcer(String confFilePath){
-		this.setConfFileDir(confFilePath);
+		this.setConfDirPath(confFilePath);
 	}
 	
 	public FileParcer() {
-		this.setConfFileDir();
+		this.setConfDirPath();
 	}
 	
-	public String showCurrentFilePath(){
-		return confFilePath;
+	
+	public String showCurrentConfDirPath(){
+		return confDirPath;
 	}
 	
-	public void setConfFileDir(){
-		this.setConfFileDir(DEFAULT_FILE_PATH);
+	public void setConfDirPath(){
+		this.setConfDirPath(DEFAULT_CONF_DIR_PATH);
 	}
 	
-	public void setConfFileDir(String newConfFilePath){
-		confFilePath = newConfFilePath;
-		confFileDir = new File(confFilePath);
+	public void setConfDirPath(String newConfDirPath){
+		confDirPath = newConfDirPath;
+		confFileDir = new File(confDirPath);
 		if (!confFileDir.exists()){
 			throw new RuntimeException("Directory does not exists!");
 		}
@@ -56,7 +62,7 @@ public class FileParcer {
 		}
 	}
 	
-	public void scanConfFileFolder(){		
+	public void scanConfDir(){		
 		confFilesList.clear();
 		for (File tmpFile : confFileDir.listFiles()){
 			if (tmpFile.isFile()){
@@ -65,7 +71,10 @@ public class FileParcer {
 		}
 	}
 	
-	public List<String> showFilesInConfDirectory(){
+	public List<String> showFilesInConfDir(){
+		if (confFilesList.isEmpty()){
+			throw new RuntimeException("There is no files in chosen directory!");
+		}
 		return confFilesList;
 	}
 	
@@ -84,7 +93,7 @@ public class FileParcer {
 		try {
 			String tempStr;
 			String splittedStr[];
-			confFile = new File(confFilePath + "/" + chosenFile);
+			confFile = new File(confDirPath + "/" + chosenFile);
 			confFileIS = new FileInputStream(confFile);
 			confFileReader = new InputStreamReader(confFileIS,Charset.forName("UTF-8"));
 			buffFileReader = new BufferedReader(confFileReader);
@@ -94,6 +103,18 @@ public class FileParcer {
 			
 			confBlockList.clear();
 			while ((tempStr = buffFileReader.readLine()) != null){
+				if(tempStr.equals("SWITCHPARAM")){
+					tempStr = buffFileReader.readLine();
+					while (!tempStr.equals("END")){
+						splittedStr = confOper.split(tempStr);
+						readedSwParams.readParamLine(splittedStr);
+						tempStr = buffFileReader.readLine();
+					}
+					//TODO Убрать подгонку под файл, придумать нормальное разграничение и чтение блоков из файла
+					tempStr = buffFileReader.readLine();
+					continue;
+				}
+				
 				if (tempStr.equals("BLOCK")){
 					tempStr = buffFileReader.readLine();
 					if (!tempStr.equals("/n")){
@@ -116,6 +137,10 @@ public class FileParcer {
 			}
 			
 		} catch (Exception e) {
+			//Cброс всех прочитанных параметров к начальным значениям
+			confBlockList.clear();
+			readedSwParams.resetAll();
+			
 			//Ловим исключение, пишем сообщение, где оно произошло, и кидаем его дальше вверх
 			throw new IOException("Error during parcing file " + chosenFile, e);
 		} finally {
@@ -131,25 +156,29 @@ public class FileParcer {
 		}
 	}
 	
-	public List<ConfBlock> getParsedConf(){
-		if (confBlockList == null){
+	public List<ConfBlock> getParsedConfBlocks(){
+		if (confBlockList == null || confBlockList.isEmpty()){
 			throw new RuntimeException("Configuration file was not parsed!");
 		}
 		return confBlockList;
 	}
 	
+	public SwitchParameters getSwitchParameters(){
+		return readedSwParams;
+	}
+	
 	public static void main(String[] args) {
-		System.out.println(DEFAULT_FILE_PATH);
+		System.out.println(DEFAULT_CONF_DIR_PATH);
 		
 		FileParcer tfp;
 		
 		try {
 			tfp = new FileParcer("e:/Saves");
-			tfp.scanConfFileFolder();
+			tfp.scanConfDir();
 			tfp.chooseConfFile("D-Link DES-3526.txt");
 			tfp.parseConfFile();
-			System.out.println(tfp.showCurrentFilePath());
-			System.out.println(tfp.showFilesInConfDirectory());
+			System.out.println(tfp.showCurrentConfDirPath());
+			System.out.println(tfp.showFilesInConfDir());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
