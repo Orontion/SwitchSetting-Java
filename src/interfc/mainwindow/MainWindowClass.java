@@ -15,6 +15,8 @@ public class MainWindowClass extends Application {
 	MainWindowController mainWindowCtrl;
 	//Ссылка на объект-парсер 
 	FileParcer mainFileParcer;
+	//Stage для отображения окна
+	Stage mainWindowStage;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
@@ -34,19 +36,25 @@ public class MainWindowClass extends Application {
 		mainFileParcer = new FileParcer("e:/Saves"); //TODO Получать ссылку на объект из ядра программы, а не создавать его заново
 		mainFileParcer.scanConfFileFolder(); //Сканируем папку
 		mainWindowCtrl.fillCmbConfFileSelect(mainFileParcer.showFilesInConfDirectory()); //Запускаем функцию для подготовки формы к показу
+		mainWindowCtrl.setMainWindowRef(this);
 		
 		//Создаём сцену на основе формы в mainView
 		Scene mainScene = new Scene(mainView);
 		
-		//Запускаем сцену и показываем её на 
-		primaryStage.setScene(mainScene);
-		primaryStage.setTitle("Настройка коммутаторов");
-		//TODO Заменить на получение значений минимального размера из выставленных в свойствах корневого Pine в файле формы FXML
-		primaryStage.setMinHeight(mainScene.getHeight());
-		primaryStage.setMinWidth(mainScene.getWidth());
-		primaryStage.show();
+		//Запускаем сцену и показываем её на экране
+		mainWindowStage = new Stage();
+		mainWindowStage.setScene(mainScene);
+		mainWindowStage.setTitle("Настройка коммутаторов");
+		mainWindowStage.setMinHeight(mainScene.getHeight());
+		mainWindowStage.setMinWidth(mainScene.getWidth());
+		mainWindowStage.show();
+		
 	}
 
+	public Stage getMainWindowStage(){
+		return mainWindowStage;
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

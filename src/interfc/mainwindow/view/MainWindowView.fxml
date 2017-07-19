@@ -26,7 +26,7 @@
           <Menu mnemonicParsing="false" text="Файл">
             <items>
                   <MenuItem mnemonicParsing="false" text="Терминал..." />
-                  <MenuItem mnemonicParsing="false" text="Настройки..." />
+                  <MenuItem fx:id="mItShowStgWindow" mnemonicParsing="false" onAction="#showSettingsWindow" text="Настройки..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" text="Выход" />
             </items>

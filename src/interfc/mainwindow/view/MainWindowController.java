@@ -4,18 +4,25 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import interfc.mainwindow.MainWindowClass;
+import interfc.settingswindow.SettingsWindowClass;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class MainWindowController {
+	@FXML
+	private MenuItem mItShowStgWindow;
+	
 	@FXML
 	private ComboBox<String> cmbConfFileSelect;
 	
@@ -58,6 +65,8 @@ public class MainWindowController {
 	private ObservableList<VlanContainer> vlanList;
 	
 	private ObservableList<String> confFileObsList; 
+	
+	private MainWindowClass mainWindowRef;
 	
 	@FXML
 	private void initialize(){
@@ -175,6 +184,21 @@ public class MainWindowController {
 		
 		//TODO Парсер портов
 		return true;
+	}
+	
+	@FXML
+	private void showSettingsWindow(){
+		SettingsWindowClass stgWindow = new SettingsWindowClass();
+		
+		try {
+			stgWindow.start(mainWindowRef.getMainWindowStage());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start settings window");
+		}
+	}
+	
+	public void setMainWindowRef(MainWindowClass mainWindowRef){
+		this.mainWindowRef = mainWindowRef;
 	}
 }
 
