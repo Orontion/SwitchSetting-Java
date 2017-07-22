@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import interfc.mainwindow.MainWindowClass;
 import interfc.settingswindow.SettingsWindowClass;
+import interfc.termwindow.TermWindowClass;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,11 +18,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 public class MainWindowController {
+	//TODO Перенести все не-FXML определения после FXML определений
 	@FXML
 	private MenuItem mItShowStgWindow;
+	
+	@FXML
+	private MenuItem mItShowTermWindow;
 	
 	@FXML
 	private ComboBox<String> cmbConfFileSelect;
@@ -61,6 +65,9 @@ public class MainWindowController {
 	
 	@FXML
 	private Button butDeleteRow;
+	
+	@FXML
+	private Button butShowTermWindow;
 	
 	private ObservableList<VlanContainer> vlanList;
 	
@@ -186,10 +193,13 @@ public class MainWindowController {
 		return true;
 	}
 	
+	//Показ окна настроек=====================================================
 	@FXML
 	private void showSettingsWindow(){
+		//Новый объект окна настроек
 		SettingsWindowClass stgWindow = new SettingsWindowClass();
 		
+		//Показываем созданное окно
 		try {
 			stgWindow.start(mainWindowRef.getMainWindowStage());
 		} catch (Exception e) {
@@ -197,8 +207,25 @@ public class MainWindowController {
 		}
 	}
 	
+	//Показ окна терминала=====================================================
+	@FXML
+	private void showTermWindow(){
+		//Новый объект окна терминала
+		TermWindowClass termWindow = new TermWindowClass();
+		
+		//Показываем созданное окно
+		try {
+			termWindow.start(mainWindowRef.getMainWindowStage());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start terminal window");
+		}
+	}
+	
+	//Получение ссылки на объект главного окна=====================================================
 	public void setMainWindowRef(MainWindowClass mainWindowRef){
 		this.mainWindowRef = mainWindowRef;
 	}
+	
+	
 }
 
