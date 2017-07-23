@@ -34,8 +34,8 @@ public class MainWindowClass extends Application {
 		
 		//Действия при загрузке формы
 		mainFileParcer = new FileParcer("e:/Saves"); //TODO Получать ссылку на объект из ядра программы, а не создавать его заново
-		mainFileParcer.scanConfFileFolder(); //Сканируем папку
-		mainWindowCtrl.fillCmbConfFileSelect(mainFileParcer.showFilesInConfDirectory()); //Запускаем функцию для подготовки формы к показу
+		mainFileParcer.scanConfDir(); //Сканируем папку
+		mainWindowCtrl.fillCmbConfFileSelect(mainFileParcer.showFilesInConfDir()); //Запускаем функцию для подготовки формы к показу
 		mainWindowCtrl.setMainWindowRef(this);
 		
 		//Создаём сцену на основе формы в mainView
