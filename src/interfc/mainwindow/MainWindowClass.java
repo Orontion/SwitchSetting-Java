@@ -1,7 +1,8 @@
 package interfc.mainwindow;
 
-import fileparcer.FileParcer;
+import confcore.ConfigurationCore;
 import interfc.mainwindow.view.MainWindowController;
+import interfc.settingswindow.SettingsWindowClass;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,14 +14,17 @@ public class MainWindowClass extends Application {
 	FXMLLoader mainWindowLoader;
 	//Ссылка на контроллер интерфейса
 	MainWindowController mainWindowCtrl;
-	//Ссылка на объект-парсер 
-	FileParcer mainFileParcer;
+	//Объект-ядро, создаётся в объекте главного окна 
+	ConfigurationCore programCore = new ConfigurationCore();
 	//Stage для отображения окна
 	Stage mainWindowStage;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		//TODO Запилить нормальную обработку исключений
+		
+		//Передача ссылки на окно в ядро
+		programCore.setMainWindow(this);
 		
 		//Получаем FXML-файл формы
 		mainWindowLoader = new FXMLLoader();
@@ -33,9 +37,7 @@ public class MainWindowClass extends Application {
 		mainWindowCtrl = mainWindowLoader.getController();
 		
 		//Действия при загрузке формы
-		mainFileParcer = new FileParcer("e:/Saves"); //TODO Получать ссылку на объект из ядра программы, а не создавать его заново
-		mainFileParcer.scanConfDir(); //Сканируем папку
-		mainWindowCtrl.fillCmbConfFileSelect(mainFileParcer.showFilesInConfDir()); //Запускаем функцию для подготовки формы к показу
+		mainWindowCtrl.fillCmbConfFileSelect(programCore.getConfFilesList()); //Получаем список файлов
 		mainWindowCtrl.setMainWindowRef(this);
 		
 		//Создаём сцену на основе формы в mainView
@@ -53,6 +55,20 @@ public class MainWindowClass extends Application {
 
 	public Stage getMainWindowStage(){
 		return mainWindowStage;
+	}
+	
+	
+	//Метод отображения окна с настройками ===================================================
+	public void showSettingsWindow(){
+		//Новый объект окна настроек
+		SettingsWindowClass stgWindow = new SettingsWindowClass(programCore);
+		
+		//Показываем созданное окно
+		try {
+			stgWindow.start(mainWindowStage);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start settings window");
+		}
 	}
 	
 	public static void main(String[] args) {

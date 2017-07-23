@@ -1,6 +1,8 @@
 package interfc.settingswindow;
 
+import confcore.ConfigurationCore;
 import interfc.mainwindow.view.MainWindowController;
+import interfc.settingswindow.view.SettingsWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,15 +14,26 @@ public class SettingsWindowClass extends Application {
 	//Loader для доступа к контроллеру
 	FXMLLoader stgWinLoader;
 	//Ссылка на контроллер интерфейса
-	MainWindowController stgWinCtrl;
+	SettingsWindowController stgWinCtrl;
 	//Stage для отображения окна настроек
 	Stage stgWinStage;
+	//Ссылка на ядро программы
+	ConfigurationCore programCoreRef;
+	
+	public SettingsWindowClass(ConfigurationCore programCoreRef) {
+		this.programCoreRef = programCoreRef;
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		stgWinLoader = new FXMLLoader(getClass().getResource("view/SettingsWindowView.fxml"));
 		
 		Parent stgView = stgWinLoader.load();
+		
+		stgWinCtrl = stgWinLoader.getController();
+		
+		
+		stgWinCtrl.fillSerialPortList(programCoreRef.getSerialPortList());
 		
 		Scene stgScene = new Scene(stgView);
 		
@@ -30,12 +43,6 @@ public class SettingsWindowClass extends Application {
 		stgWinStage.initModality(Modality.WINDOW_MODAL);
 		stgWinStage.initOwner(primaryStage);
 		stgWinStage.show();
-		
-//		primaryStage.setScene(stgScene);
-//		primaryStage.setTitle("Настройки приложения");
-//		primaryStage.initModality(Modality.WINDOW_MODAL);
-//		primaryStage.show();
-		
 	}
 
 	public static void main(String[] args) {

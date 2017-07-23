@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import interfc.mainwindow.MainWindowClass;
-import interfc.settingswindow.SettingsWindowClass;
 import interfc.termwindow.TermWindowClass;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -135,15 +134,7 @@ public class MainWindowController {
 	//Показ окна настроек====================================================================
 	@FXML
 	private void showSettingsWindow(){
-		//Новый объект окна настроек
-		SettingsWindowClass stgWindow = new SettingsWindowClass();
-		
-		//Показываем созданное окно
-		try {
-			stgWindow.start(mainWindowRef.getMainWindowStage());
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot start settings window");
-		}
+		mainWindowRef.showSettingsWindow();
 	}
 	
 	//Показ окна терминала====================================================================
