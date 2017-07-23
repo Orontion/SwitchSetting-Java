@@ -45,13 +45,13 @@ public class ConfigurationCore {
 		return converterList;
 	}
 	
-	//Метод для получения списка имён конфигурационных файлов
+	//Получение списка имён конфигурационных файлов ==================================================================================================
 	public List<String> getConfFilesList(){
 		mainFileParcer.scanConfDir();
 		return mainFileParcer.showFilesInConfDir();
 	}
 	
-	//Метод получения текущего пути к файлам конфигурации
+	//Получение текущего пути к файлам конфигурации ==================================================================================================
 	public String getConFileDir(){
 		//TODO Исключение в случае косячного пути
 		return mainFileParcer.showCurrentConfDirPath();
@@ -61,8 +61,14 @@ public class ConfigurationCore {
 		mainFileParcer.setConfDirPath(newConfDirPath);
 	}
 	
+	//Выбор COM-порта для работы ==================================================================================================
 	public void chooseSerialPort(String serialPortName){
 		serialPortInteractor.chooseSerialPort(serialPortName);
+	}
+	
+	//Выбор скорости работы COM-порта ==================================================================================================
+	public void chooseSerialPortSpeed(int chosedSpeed){
+		serialPortInteractor.chooseSerialPortSpeed(chosedSpeed);
 	}
 	
 	public static void main(String[] args) {

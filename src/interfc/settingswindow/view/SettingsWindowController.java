@@ -24,6 +24,9 @@ public class SettingsWindowController {
 	private ComboBox<Integer> cmbPortSpeed;
 	
 	@FXML
+	private Button butConfirmSerialPortSettings;
+	
+	@FXML
 	private void initialize(){
 		serialPortObsList = FXCollections.observableArrayList();
 		portSpeedObsList = FXCollections.observableArrayList();
@@ -36,16 +39,40 @@ public class SettingsWindowController {
 		
 		cmbSerialPort.setItems(serialPortObsList);
 		cmbPortSpeed.setItems(portSpeedObsList);
+		
+		//TODO Добавить загрузку текущих настроек COM-порта из ядра программы
 	}
 	
+	
+	//Щелчок по кнопке выбора папки с конфигурационными файлами
 	@FXML
 	private void chooseConfFileDir(){
 		stgWinRef.chooseConfFileDir();
 	}
 	
 	@FXML
-	private void chooseSerialPort(){
+	private void activateSerialPortSettingsButton(){
+		butConfirmSerialPortSettings.setDisable(false);
+	}
+	
+	@FXML
+	private void confirmSerialPortSettings(){
+		if (cmbSerialPort.getSelectionModel().getSelectedItem() == null){
+			//TODO Вставить обработку ошибки не выбранного порта
+			return;
+		}		
+		
+		if (cmbPortSpeed.getSelectionModel().getSelectedItem() == null){
+			//TODO Вставить обработку ошибки не выбранной скорости порта
+			return;
+		}
+		
 		stgWinRef.chooseSerialPort(cmbSerialPort.getSelectionModel().getSelectedItem());
+		stgWinRef.chooseSerialPortSpeed(cmbPortSpeed.getSelectionModel().getSelectedItem());
+		
+		//TODO вставить передачу настроек COM-порта
+		
+		butConfirmSerialPortSettings.setDisable(true);
 	}
 	
 	private SettingsWindowClass stgWinRef;

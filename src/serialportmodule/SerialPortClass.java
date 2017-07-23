@@ -40,6 +40,7 @@ public class SerialPortClass {
 		try {
 			workingPort = new SerialPort(selectedPort);
 			workingPort.openPort();
+			//TODO Вставить обработку ошибок ввода параметров порта
 			workingPort.setParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 			workingPort.addEventListener(innerPortListener);
 		} catch (SerialPortException e) {
@@ -48,16 +49,22 @@ public class SerialPortClass {
 		}
 	}
 	
-	//Получение списка последовательных портов в системе
+	//Получение списка последовательных портов в системе ====================================================================================================================
 	public String[] getSerialPortList(){
 		portList = SerialPortList.getPortNames();
 		return portList;
 	}
 	
-	//Выбор определённого порта	
+	//Выбор определённого порта	====================================================================================================================
 	public void chooseSerialPort(String selectedPort){
 		this.selectedPort = selectedPort;
-		System.out.print(this.selectedPort);
+		System.out.println(this.selectedPort); //TODO Убрать
+	}
+	
+	//Выбор скорости порта
+	public void chooseSerialPortSpeed(int chosedSpeed){
+		portSpeed = chosedSpeed;
+		System.out.println(this.portSpeed); //TODO Убрать
 	}
 	
 	public String getSelectedPort(){
@@ -68,6 +75,7 @@ public class SerialPortClass {
 		System.out.print(dataToPrint);
 	}
 	
+	//Закрыть порт ====================================================================================================================
 	public void closeSerialPort(){
 		if (workingPort.isOpened()){
 			try {

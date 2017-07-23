@@ -68,8 +68,14 @@ public class SettingsWindowClass extends Application {
 		}
 	}
 
+	//Выбор COM-порта для работы ==================================================================================================
 	public void chooseSerialPort(String serialPortName){
 		programCoreRef.chooseSerialPort(serialPortName);
+	}
+	
+	//Выбор скорости порта ==================================================================================================
+	public void chooseSerialPortSpeed(int chosedSpeed){
+		programCoreRef.chooseSerialPortSpeed(chosedSpeed);
 	}
 	
 	public static void main(String[] args) {
