@@ -61,6 +61,8 @@ public class ConfigurationCore {
 		mainFileParcer.setConfDirPath(newConfDirPath);
 	}
 	
+	
+	
 	public static void main(String[] args) {
 		
 	}

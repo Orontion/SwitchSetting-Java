@@ -21,10 +21,21 @@ public class SettingsWindowController {
 	private ComboBox<String> cmbSerialPort;
 	
 	@FXML
+	private ComboBox<Integer> cmbPortSpeed;
+	
+	@FXML
 	private void initialize(){
 		serialPortObsList = FXCollections.observableArrayList();
+		portSpeedObsList = FXCollections.observableArrayList();
+		
+		portSpeedObsList.add(7200);
+		portSpeedObsList.add(9600);
+		portSpeedObsList.add(14400);
+		portSpeedObsList.add(57600);
+		portSpeedObsList.add(115200);
 		
 		cmbSerialPort.setItems(serialPortObsList);
+		cmbPortSpeed.setItems(portSpeedObsList);
 	}
 	
 	@FXML
@@ -35,6 +46,8 @@ public class SettingsWindowController {
 	private SettingsWindowClass stgWinRef;
 	
 	private ObservableList<String> serialPortObsList;
+	
+	private ObservableList<Integer> portSpeedObsList;
 	
 	//Метод установки ссылки на объект окна настроек
 	public void setSettingsWindowRef(SettingsWindowClass stgWinRef){

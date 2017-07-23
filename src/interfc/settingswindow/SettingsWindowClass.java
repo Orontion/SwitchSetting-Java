@@ -4,7 +4,6 @@ import java.io.File;
 
 import confcore.ConfigurationCore;
 import interfc.mainwindow.MainWindowClass;
-import interfc.mainwindow.view.MainWindowController;
 import interfc.settingswindow.view.SettingsWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
