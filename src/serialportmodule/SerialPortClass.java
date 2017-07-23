@@ -30,7 +30,12 @@ public class SerialPortClass {
 	private String selectedPort;
 	private SerialPort workingPort;
 	private SerialPortListener innerPortListener = new SerialPortListener();
+	int portSpeed = -1;
+	int portDataBits = -1;
+	int portStopBits = -1;
+	int portParity = -1;
 	
+	//Открытие порта и запуск потока чтения через Listener
 	public void startWork(){
 		try {
 			workingPort = new SerialPort(selectedPort);
@@ -43,14 +48,16 @@ public class SerialPortClass {
 		}
 	}
 	
-	
+	//Получение списка последовательных портов в системе
 	public String[] getSerialPortList(){
 		portList = SerialPortList.getPortNames();
 		return portList;
 	}
 	
-	public void selectPort(String selectedPort){
+	//Выбор определённого порта	
+	public void chooseSerialPort(String selectedPort){
 		this.selectedPort = selectedPort;
+		System.out.print(this.selectedPort);
 	}
 	
 	public String getSelectedPort(){
@@ -94,7 +101,7 @@ public class SerialPortClass {
 			System.out.println(iterStr);
 		}
 		
-		testObj.selectPort(testPortList[0]);
+		testObj.chooseSerialPort(testPortList[0]);
 		testObj.startWork();
 		System.out.println("Selected port: " + testObj.getSelectedPort());
 		
@@ -115,21 +122,7 @@ public class SerialPortClass {
 			e.printStackTrace();
 		}
 		
-	}
-	
-
-	
-//	public void finalize(){
-//		try {
-//			System.out.println("Finalizing...");
-//			workingPort.closePort();
-//		} catch (SerialPortException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//	}
-	
+	}	
 }
 
 

@@ -43,6 +43,11 @@ public class SettingsWindowController {
 		stgWinRef.chooseConfFileDir();
 	}
 	
+	@FXML
+	private void chooseSerialPort(){
+		stgWinRef.chooseSerialPort(cmbSerialPort.getSelectionModel().getSelectedItem());
+	}
+	
 	private SettingsWindowClass stgWinRef;
 	
 	private ObservableList<String> serialPortObsList;

@@ -61,7 +61,9 @@ public class ConfigurationCore {
 		mainFileParcer.setConfDirPath(newConfDirPath);
 	}
 	
-	
+	public void chooseSerialPort(String serialPortName){
+		serialPortInteractor.chooseSerialPort(serialPortName);
+	}
 	
 	public static void main(String[] args) {
 		

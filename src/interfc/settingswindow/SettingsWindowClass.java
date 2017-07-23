@@ -68,6 +68,10 @@ public class SettingsWindowClass extends Application {
 		}
 	}
 
+	public void chooseSerialPort(String serialPortName){
+		programCoreRef.chooseSerialPort(serialPortName);
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
