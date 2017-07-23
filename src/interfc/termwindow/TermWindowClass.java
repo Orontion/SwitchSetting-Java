@@ -1,5 +1,6 @@
 package interfc.termwindow;
 
+import confcore.ConfigurationCore;
 import interfc.termwindow.view.TermWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,12 @@ public class TermWindowClass extends Application {
 	TermWindowController termWinCtrl;
 	//Stage дл€ отображени€ окна терминала
 	Stage termWinStage;
+	//—сылка на €дро программы
+	ConfigurationCore programCoreRef;
 	
+	public TermWindowClass(ConfigurationCore programCoreRef) {
+		this.programCoreRef = programCoreRef;
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {

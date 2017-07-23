@@ -51,6 +51,16 @@ public class ConfigurationCore {
 		return mainFileParcer.showFilesInConfDir();
 	}
 	
+	//Метод получения текущего пути к файлам конфигурации
+	public String getConFileDir(){
+		//TODO Исключение в случае косячного пути
+		return mainFileParcer.showCurrentConfDirPath();
+	}
+	
+	public void setConFileDir(String newConfDirPath){
+		mainFileParcer.setConfDirPath(newConfDirPath);
+	}
+	
 	public static void main(String[] args) {
 		
 	}

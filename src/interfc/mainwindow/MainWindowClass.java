@@ -3,6 +3,7 @@ package interfc.mainwindow;
 import confcore.ConfigurationCore;
 import interfc.mainwindow.view.MainWindowController;
 import interfc.settingswindow.SettingsWindowClass;
+import interfc.termwindow.TermWindowClass;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,12 +34,12 @@ public class MainWindowClass extends Application {
 		//Загружаем полученный файл в объект Parent
 		Parent mainView = mainWindowLoader.load();
 		
-		//Получаем ссылку на контроллер интерфейса
+		//Получаем ссылку на контроллер интерфейса и даём ему ссылку на этот объект
 		mainWindowCtrl = mainWindowLoader.getController();
+		mainWindowCtrl.setMainWindowRef(this);
 		
 		//Действия при загрузке формы
-		mainWindowCtrl.fillCmbConfFileSelect(programCore.getConfFilesList()); //Получаем список файлов
-		mainWindowCtrl.setMainWindowRef(this);
+		refreshFileListCmb();
 		
 		//Создаём сцену на основе формы в mainView
 		Scene mainScene = new Scene(mainView);
@@ -50,27 +51,39 @@ public class MainWindowClass extends Application {
 		mainWindowStage.setMinHeight(mainScene.getHeight());
 		mainWindowStage.setMinWidth(mainScene.getWidth());
 		mainWindowStage.show();
-		
-	}
-
-	public Stage getMainWindowStage(){
-		return mainWindowStage;
 	}
 	
-	
-	//Метод отображения окна с настройками ===================================================
+	//Метод отображения окна с настройками =======================================================================
 	public void showSettingsWindow(){
 		//Новый объект окна настроек
-		SettingsWindowClass stgWindow = new SettingsWindowClass(programCore);
-		
+		SettingsWindowClass stgWindow = new SettingsWindowClass(programCore, this);
+
 		//Показываем созданное окно
 		try {
 			stgWindow.start(mainWindowStage);
 		} catch (Exception e) {
-			throw new RuntimeException("Cannot start settings window");
+			throw new RuntimeException("Cannot start settings window", e);
 		}
 	}
 	
+	//Метод отображения окна терминала ===========================================================================
+	public void showTermWindow(){
+		//Новый объект окна терминала
+		TermWindowClass termWindow = new TermWindowClass(programCore);
+		
+		//Показываем созданное окно
+		try {
+			termWindow.start(mainWindowStage);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start terminal window");
+		}
+	}
+	
+	//Метод обновления содержимого ComboBox-а со списком конфигурационных файлов =================================
+	public void refreshFileListCmb(){
+		mainWindowCtrl.fillCmbConfFileSelect(programCore.getConfFilesList());
+	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}

@@ -140,15 +140,7 @@ public class MainWindowController {
 	//Показ окна терминала====================================================================
 	@FXML
 	private void showTermWindow(){
-		//Новый объект окна терминала
-		TermWindowClass termWindow = new TermWindowClass();
-		
-		//Показываем созданное окно
-		try {
-			termWindow.start(mainWindowRef.getMainWindowStage());
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot start terminal window");
-		}
+		mainWindowRef.showTermWindow();
 	}
 	
 	//ObservableList объектов типа VlanContaner, хранит настройки по VLANам
@@ -220,5 +212,7 @@ public class MainWindowController {
 		confFileObsList.clear();
 		confFileObsList.addAll(confFileList);
 	}
+	
+	//
 }
 
