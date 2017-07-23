@@ -2,6 +2,7 @@ package interfc.mainwindow.view;
 
 import java.util.List;
 
+//TODO Перевести диалоговые окна со Swing на JavaFX
 import javax.swing.JOptionPane;
 
 import interfc.mainwindow.MainWindowClass;
@@ -20,7 +21,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MainWindowController {
-	//TODO Перенести все не-FXML определения после FXML определений
 	@FXML
 	private MenuItem mItShowStgWindow;
 	
@@ -69,12 +69,6 @@ public class MainWindowController {
 	@FXML
 	private Button butShowTermWindow;
 	
-	private ObservableList<VlanContainer> vlanList;
-	
-	private ObservableList<String> confFileObsList; 
-	
-	private MainWindowClass mainWindowRef;
-	
 	@FXML
 	private void initialize(){
 		//Инициализация объектов для хранения данных
@@ -91,17 +85,9 @@ public class MainWindowController {
 		cmbConfFileSelect.setItems(confFileObsList);
 	}
 	
-	public void fillCmbConfFileSelect(List<String> confFileList){
-		confFileObsList.clear();
-		confFileObsList.addAll(confFileList);
-	}
-	
+	//Метод добавления данных о VLAN из полей в таблицу. В момент добавления производится проверка корректности данных
 	@FXML
 	private void addVlanToTable(){
-		//TODO Запилить обработчик ввода (пустые поля, больше одного управляющего VLAN и т.п.)
-//		if (txtVlanName.textProperty().isEmpty().get()){
-//			txtVlanName.setText("Works!");
-//		}
 		if (vlanInputCheck()){
 			vlanList.add(new VlanContainer(txtVlanName.getText(), 
 											txtVlanTgd.getText(), 
@@ -114,6 +100,7 @@ public class MainWindowController {
 		}
 	}
 	
+	//Метод активации кнопки удаления, когда происходит выбор строчки в таблице VLAN ====================
 	@FXML
 	private void butDeleteActivation(){
 		//TODO Активация кнопки удаления не только при щелчке мыши
@@ -122,6 +109,7 @@ public class MainWindowController {
 		}
 	}
 	
+	//Метод удаления выбранного VLAN вместе с настройками из таблицы ====================================
 	@FXML
 	private void deleteRow(){
 		vlanList.remove(tableVlanStg.getSelectionModel().getSelectedIndex());
@@ -129,6 +117,7 @@ public class MainWindowController {
 		butDeleteRow.setDisable(true);
 	}
 	
+	//Метод очистки всех значений, которые были введены =================================================
 	@FXML
 	private void clearAll(){
 		if (JOptionPane.showConfirmDialog(null,"Подтверждение", "Очистить все настройки?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
@@ -143,7 +132,49 @@ public class MainWindowController {
 		}
 	}
 	
-	//Функция для проверки корректности вводимого VLAN
+	//Показ окна настроек====================================================================
+	@FXML
+	private void showSettingsWindow(){
+		//Новый объект окна настроек
+		SettingsWindowClass stgWindow = new SettingsWindowClass();
+		
+		//Показываем созданное окно
+		try {
+			stgWindow.start(mainWindowRef.getMainWindowStage());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start settings window");
+		}
+	}
+	
+	//Показ окна терминала====================================================================
+	@FXML
+	private void showTermWindow(){
+		//Новый объект окна терминала
+		TermWindowClass termWindow = new TermWindowClass();
+		
+		//Показываем созданное окно
+		try {
+			termWindow.start(mainWindowRef.getMainWindowStage());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start terminal window");
+		}
+	}
+	
+	//ObservableList объектов типа VlanContaner, хранит настройки по VLANам
+	private ObservableList<VlanContainer> vlanList;
+	
+	//ObservableList со списком имён файлов конфигурации
+	private ObservableList<String> confFileObsList; 
+	
+	//Ссылка на объект-окно
+	private MainWindowClass mainWindowRef;
+	
+	//Получение ссылки на объект главного окна===============================================================
+	public void setMainWindowRef(MainWindowClass mainWindowRef){
+		this.mainWindowRef = mainWindowRef;
+	}
+	
+	//Функция для проверки корректности вводимого VLAN ======================================================
 	private Boolean vlanInputCheck(){
 		//Проверка имени VLAN
 		if (txtVlanName.getText().isEmpty()){
@@ -178,7 +209,7 @@ public class MainWindowController {
 			JOptionPane.showMessageDialog(null, "Должен быть настроен хотя бы один тэгированный или нетэгированный порт!");
 			return false;
 		}
-		
+	
 		//Проверка попытки ввести второй управляющий VLAN
 		if (chkbxIsControl.isSelected()){
 			for (VlanContainer tmpCont : vlanList){
@@ -188,44 +219,15 @@ public class MainWindowController {
 				}
 			}
 		}
-		
+	
 		//TODO Парсер портов
 		return true;
 	}
 	
-	//Показ окна настроек=====================================================
-	@FXML
-	private void showSettingsWindow(){
-		//Новый объект окна настроек
-		SettingsWindowClass stgWindow = new SettingsWindowClass();
-		
-		//Показываем созданное окно
-		try {
-			stgWindow.start(mainWindowRef.getMainWindowStage());
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot start settings window");
-		}
+	//Метод добавления содержимого в ComboBox для выбора файла/свитча для настройки ========================================================
+	public void fillCmbConfFileSelect(List<String> confFileList){
+		confFileObsList.clear();
+		confFileObsList.addAll(confFileList);
 	}
-	
-	//Показ окна терминала=====================================================
-	@FXML
-	private void showTermWindow(){
-		//Новый объект окна терминала
-		TermWindowClass termWindow = new TermWindowClass();
-		
-		//Показываем созданное окно
-		try {
-			termWindow.start(mainWindowRef.getMainWindowStage());
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot start terminal window");
-		}
-	}
-	
-	//Получение ссылки на объект главного окна=====================================================
-	public void setMainWindowRef(MainWindowClass mainWindowRef){
-		this.mainWindowRef = mainWindowRef;
-	}
-	
-	
 }
 

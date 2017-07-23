@@ -8,6 +8,7 @@ public class TermWindowController {
 	@FXML
 	private Button butClose;
 	
+	//Метод закрытия окна ==========================================================
 	@FXML
 	private void closeForm(){
 		termWindowRef.closeWindow();
