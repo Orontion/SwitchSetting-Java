@@ -75,7 +75,7 @@ public class MainWindowClass extends Application {
 		try {
 			termWindow.start(mainWindowStage);
 		} catch (Exception e) {
-			throw new RuntimeException("Cannot start terminal window");
+			throw new RuntimeException("Cannot start terminal window", e);
 		}
 	}
 	

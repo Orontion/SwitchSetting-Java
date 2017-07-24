@@ -10,6 +10,7 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
+import serialportmodule.container.InputContainer;
 
 public class SerialPortClass {
 	private class SerialPortListener implements SerialPortEventListener { 
@@ -30,6 +31,7 @@ public class SerialPortClass {
 	private String selectedPort;
 	private SerialPort workingPort;
 	private SerialPortListener innerPortListener = new SerialPortListener();
+	private InputContainer inputContRef;
 	int portSpeed = -1;
 	int portDataBits = -1;
 	int portStopBits = -1;
@@ -56,15 +58,30 @@ public class SerialPortClass {
 	}
 	
 	//Выбор определённого порта	====================================================================================================================
-	public void chooseSerialPort(String selectedPort){
-		this.selectedPort = selectedPort;
+	public void chooseSerialPort(String chosedPort){
+		this.selectedPort = chosedPort;
 		System.out.println(this.selectedPort); //TODO Убрать
 	}
 	
-	//Выбор скорости порта
+	//Выбор скорости порта ====================================================================================================================
 	public void chooseSerialPortSpeed(int chosedSpeed){
 		portSpeed = chosedSpeed;
 		System.out.println(this.portSpeed); //TODO Убрать
+	}
+	
+	//Выбор DataBits ====================================================================================================================
+	public void chooseSerialPortDataBits(int chosedDataBits){
+		portDataBits = chosedDataBits;
+	}
+	
+	//Выбор StopBits ====================================================================================================================
+	public void chooseSerialPortStopBits(int chosedStopBits){
+		portStopBits = chosedStopBits;
+	}
+	
+	//Выбор parity ====================================================================================================================
+	public void chooseSerialPortParity(int chosedParity){
+		portParity = chosedParity;
 	}
 	
 	public String getSelectedPort(){
@@ -72,7 +89,7 @@ public class SerialPortClass {
 	}
 	
 	public void printOutData(String dataToPrint){
-		System.out.print(dataToPrint);
+		inputContRef.addData(dataToPrint);
 	}
 	
 	//Закрыть порт ====================================================================================================================
@@ -87,6 +104,7 @@ public class SerialPortClass {
 		}
 	}
 	
+	//Ввод строки в порт ====================================================================================================================
 	public void enterLine(String enteredLine){
 		if (!workingPort.isOpened()){
 			throw new RuntimeException("Serial port is not opened!");
@@ -98,6 +116,11 @@ public class SerialPortClass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	//Передача ссылки на контейнер данных из COM-порта ====================================================================================================================
+	public void setInputContainerRef(InputContainer inputCont){
+		this.inputContRef = inputCont;
 	}
 	
 	public static void main(String args[]){

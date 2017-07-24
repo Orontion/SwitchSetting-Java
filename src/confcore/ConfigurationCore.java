@@ -8,6 +8,8 @@ import interfc.mainwindow.MainWindowClass;
 import interfc.settingswindow.SettingsWindowClass;
 import interfc.termwindow.TermWindowClass;
 import serialportmodule.SerialPortClass;
+import serialportmodule.container.InputContainer;
+import serialportmodule.container.InputEventListener;
 
 public class ConfigurationCore {
 	//Объекты окон
@@ -16,6 +18,7 @@ public class ConfigurationCore {
 	private TermWindowClass terminalWindow;
 	private FileParcer mainFileParcer;
 	private SerialPortClass serialPortInteractor;
+	private InputContainer serialPortInputCont;
 	
 	//TODO Проверить работу конструктора, оптимизировать по возможности
 	public ConfigurationCore() {
@@ -31,6 +34,7 @@ public class ConfigurationCore {
 		//TODO Загрузка настроек из файла
 		mainFileParcer = new FileParcer("e:/Saves"); //
 		serialPortInteractor = new SerialPortClass();
+		serialPortInputCont = new InputContainer();
 	}
 	
 	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаёт исключение
@@ -69,6 +73,18 @@ public class ConfigurationCore {
 	//Выбор скорости работы COM-порта ==================================================================================================
 	public void chooseSerialPortSpeed(int chosedSpeed){
 		serialPortInteractor.chooseSerialPortSpeed(chosedSpeed);
+	}
+	
+	public void addSerialPortInputListener(InputEventListener inputListener){
+		serialPortInputCont.addListener(inputListener);
+	}
+	
+	public void removeSerialPortInputListener(InputEventListener inputListener){
+		serialPortInputCont.removeListener(inputListener);
+	}
+	
+	public String getAllSerialPortData(){
+		return serialPortInputCont.getAllInputData();
 	}
 	
 	public static void main(String[] args) {
