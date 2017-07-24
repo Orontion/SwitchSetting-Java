@@ -57,7 +57,7 @@
                      <children>
                         <GridPane vgap="20.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
@@ -121,9 +121,21 @@
                                     <Insets right="20.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField onAction="#activateSerialPortSettingsButton" text="8" GridPane.columnIndex="1" />
-                              <TextField onAction="#activateSerialPortSettingsButton" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField onAction="#activateSerialPortSettingsButton" text="NONE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <ComboBox fx:id="cmbPortDataBits" prefWidth="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <ComboBox fx:id="cmbPortStopBits" prefWidth="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <ComboBox fx:id="cmbPortParity" prefWidth="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </GridPane>
                         <Separator prefWidth="200.0" />
