@@ -160,7 +160,7 @@ public class MainWindowController {
 	private Boolean vlanInputCheck(){
 		//Проверка имени VLAN
 		if (txtVlanName.getText().isEmpty()){
-			JOptionPane.showMessageDialog(null, "Не введен номер VLAN!");
+			showMessageWindow("Не введен номер VLAN!");
 			return false;
 		}
 		
@@ -169,26 +169,26 @@ public class MainWindowController {
 		try {
 			TestInt = Integer.parseInt(txtVlanName.getText());
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "VLAN должен быть числом в диапазоне от 0 до 65535!");
+			showMessageWindow("VLAN должен быть числом в диапазоне от 0 до 65535!");
 			return false;
 		}
 		
 		if (TestInt < 0 || TestInt > 65535){
-			JOptionPane.showMessageDialog(null, "VLAN должен быть числом в диапазоне от 0 до 65535!");
+			showMessageWindow("VLAN должен быть числом в диапазоне от 0 до 65535!");
 			return false;
 		}
 		
 		//Проверка повторяющихся VLAN
 		for (VlanContainer tmpCont : vlanList){
 			if (txtVlanName.getText().equals(tmpCont.getVlanName())){
-				JOptionPane.showMessageDialog(null, "Нельзя вводить повторяющиеся VLAN!");
+				showMessageWindow("Нельзя вводить повторяющиеся VLAN!");
 				return false;
 			}
 		}
 		
 		//Проверка, создаваемый VLAN имеет настроенные порты
 		if (txtVlanTgd.getText().isEmpty() && txtVlanUtgd.getText().isEmpty()){
-			JOptionPane.showMessageDialog(null, "Должен быть настроен хотя бы один тэгированный или нетэгированный порт!");
+			showMessageWindow("Должен быть настроен хотя бы один тэгированный или нетэгированный порт!");
 			return false;
 		}
 	
@@ -196,7 +196,7 @@ public class MainWindowController {
 		if (chkbxIsControl.isSelected()){
 			for (VlanContainer tmpCont : vlanList){
 				if (tmpCont.getVlanIsControl()){
-					JOptionPane.showMessageDialog(null, "Можно настроить только один управляющий VLAN!");
+					showMessageWindow("Можно настроить только один управляющий VLAN!");
 					return false;
 				}
 			}
@@ -212,6 +212,9 @@ public class MainWindowController {
 		confFileObsList.addAll(confFileList);
 	}
 	
-	//
+	//Метод отображения диалогового окна ====================================================================================================
+	public void showMessageWindow(String message){
+		JOptionPane.showMessageDialog(null, message);
+	}
 }
 

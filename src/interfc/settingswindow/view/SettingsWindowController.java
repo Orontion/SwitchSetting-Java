@@ -87,7 +87,7 @@ public class SettingsWindowController {
 	
 	@FXML
 	private void activateSerialPortSettingsButton(){
-		butConfirmSerialPortSettings.setDisable(false);
+		if (canSetupSerialPort)	butConfirmSerialPortSettings.setDisable(false);
 	}
 	
 	@FXML
@@ -122,18 +122,29 @@ public class SettingsWindowController {
 	
 	private ObservableList<String> portParity;
 	
-	//Метод установки ссылки на объект окна настроек
+	private boolean canSetupSerialPort = true;
+	
+	//Метод установки ссылки на объект окна настроек ================================================================================================
 	public void setSettingsWindowRef(SettingsWindowClass stgWinRef){
 		this.stgWinRef = stgWinRef;
 	}
 	
-	//Метод для заполнения связанного с ComboBox списка имён последовательных портов
+	//Метод для заполнения связанного с ComboBox списка имён последовательных портов ================================================================
 	public void fillSerialPortList(List<String> serialPortList){
 		serialPortObsList.clear();
 		serialPortObsList.addAll(serialPortList);
+		canSetupSerialPort = true;
 	}
 	
-	//Метод для получения текущего пути к файлам конфигурации
+	//Метод по-умолчанию - порты отсутствуют =======================================================================================================
+	public void fillSerialPortList(){
+		serialPortObsList.clear();
+		serialPortObsList.add("НЕТ ДОСТУПНЫХ ПОРТОВ!");
+		cmbSerialPort.setValue("НЕТ ДОСТУПНЫХ ПОРТОВ!");
+		canSetupSerialPort = false;
+	}
+	
+	//Метод для получения текущего пути к файлам конфигурации ======================================================================================
 	public void setConfDirPath(String confDirPath){
 		txtConfDirPath.setText(confDirPath);
 	}

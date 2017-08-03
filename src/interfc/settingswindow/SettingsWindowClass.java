@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import swsetexceptions.NoSerialPortsInSystemException;
+import swsetexceptions.SwitchSettingException;
 
 public class SettingsWindowClass extends Application {
 	//Loader для доступа к контроллеру
@@ -41,8 +43,17 @@ public class SettingsWindowClass extends Application {
 		stgWinCtrl = stgWinLoader.getController();
 		stgWinCtrl.setSettingsWindowRef(this);
 		
-		stgWinCtrl.fillSerialPortList(programCoreRef.getSerialPortList());
+		//TODO Придумать try-catch покрасивее
+		try {
+			stgWinCtrl.fillSerialPortList(programCoreRef.getSerialPortList());
+		} catch (NoSerialPortsInSystemException e){
+			//Если доступные порты отсутствуют
+			stgWinCtrl.fillSerialPortList();
+		} catch (Exception e) {
+			throw new SwitchSettingException("Unknown exception", e);
+		}
 		stgWinCtrl.setConfDirPath(programCoreRef.getConFileDir());
+		
 		
 		Scene stgScene = new Scene(stgView);
 		
@@ -54,7 +65,7 @@ public class SettingsWindowClass extends Application {
 		stgWinStage.show();
 	}
 
-	//Вызов диалога выбора папки с конфигурационными файлами
+	//Вызов диалога выбора папки с конфигурационными файлами =======================================================================
 	public void chooseConfFileDir(){
 		DirectoryChooser dirChooser = new DirectoryChooser();
 		File newConfDir;

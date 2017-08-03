@@ -10,6 +10,8 @@ import interfc.termwindow.TermWindowClass;
 import serialportmodule.SerialPortClass;
 import serialportmodule.container.InputContainer;
 import serialportmodule.container.InputEventListener;
+import swsetexceptions.NoSerialPortsInSystemException;
+import swsetexceptions.SwitchSettingException;
 
 public class ConfigurationCore {
 	//Объекты окон
@@ -37,14 +39,15 @@ public class ConfigurationCore {
 		serialPortInputCont = new InputContainer();
 	}
 	
-	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаёт исключение
+	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаёт исключение ===============================================================
 	public List<String> getSerialPortList(){
 		List<String> converterList = new ArrayList<>();
 		for (String tmpStr : serialPortInteractor.getSerialPortList()){
 			converterList.add(tmpStr);
 		}
+		
 		if (converterList.isEmpty()){
-			throw new RuntimeException("There is no serial ports in system!");
+			throw new NoSerialPortsInSystemException("There is no serial ports in system!");
 		}
 		return converterList;
 	}

@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import swsetexceptions.NoSerialPortsInSystemException;
+import swsetexceptions.SwitchSettingException;
 
 public class MainWindowClass extends Application {
 	//Loader для доступа к контроллеру
@@ -62,7 +64,7 @@ public class MainWindowClass extends Application {
 		try {
 			stgWindow.start(mainWindowStage);
 		} catch (Exception e) {
-			throw new RuntimeException("Cannot start settings window", e);
+			throw new SwitchSettingException("Cannot start settings window", e);
 		}
 	}
 	
