@@ -48,19 +48,26 @@ public class TermWindowClass extends Application implements InputEventListener {
 			
 			@Override
 			public void handle(WindowEvent event) {
-				programCoreRef.removeSerialPortInputListener(TermWindowClass.this); //Убрать ссылку на уничтожаемый объект из списка Listener-ов
+				termWinStage.hide();
 			}
 		});
 		termWinStage.setScene(termScene);
 		termWinStage.setTitle("Терминал");
 		termWinStage.initOwner(primaryStage);
-		termWinStage.show();
+//		termWinStage.show();
 	}
 	
 	public void closeWindow(){
 		//Возможна утечка памяти. Метод .close() просто скрывает окно, а не закрывает.
-		termWinStage.close();
-		programCoreRef.removeSerialPortInputListener(this); //Костыль, т.к. при вызове .close() event не генерируется
+		termWinStage.hide();
+	}
+	
+	public void hideWindow(){
+		termWinStage.hide();
+	}
+	
+	public void showWindow(){
+		termWinStage.show();
 	}
 	
 	@Override

@@ -15,7 +15,7 @@ public class TermWindowController {
 	//Метод закрытия окна ==========================================================
 	@FXML
 	private void closeForm(){
-		termWindowRef.closeWindow();
+		termWindowRef.hideWindow();
 	}
 	
 	public void addDataToTerminal(String newData){
