@@ -12,6 +12,8 @@ import jssc.SerialPortList;
 import serialportmodule.container.InputContainer;
 
 public class SerialPortClass {
+	
+	//Inner class-listener дл€ обработки событий получени€ данных с порта
 	private class SerialPortListener implements SerialPortEventListener { 
 	    public void serialEvent (SerialPortEvent event) {
 	        if (event.isRXCHAR () && event.getEventValue () > 0){ 
@@ -41,9 +43,11 @@ public class SerialPortClass {
 		try {
 			workingPort = new SerialPort(selectedPort);
 			workingPort.openPort();
+			System.out.println("port operned!");
 			//TODO ¬ставить обработку ошибок ввода параметров порта
 			workingPort.setParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 			workingPort.addEventListener(innerPortListener);
+			System.out.println("listener added!");
 		} catch (SerialPortException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,7 +121,7 @@ public class SerialPortClass {
 		}
 	}
 	
-	//ѕередача ссылки на контейнер данных из COM-порта ====================================================================================================================
+	//ћетод получени€ ссылки на контейнер данных ====================================================================================================================
 	public void setInputContainerRef(InputContainer inputCont){
 		this.inputContRef = inputCont;
 	}

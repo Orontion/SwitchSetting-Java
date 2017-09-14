@@ -37,7 +37,7 @@ public class TermWindowClass extends Application implements InputEventListener {
 		termWinCtrl = termWinLoader.getController();
 		termWinCtrl.setTermWindowRef(this);
 		
-		termWinCtrl.addDataToTerminal(programCoreRef.getAllSerialPortData());
+//		termWinCtrl.addDataToTerminal(programCoreRef.getAllSerialPortData());
 		
 		Scene termScene = new Scene(termView);
 		
@@ -57,11 +57,6 @@ public class TermWindowClass extends Application implements InputEventListener {
 //		termWinStage.show();
 	}
 	
-	public void closeWindow(){
-		//Возможна утечка памяти. Метод .close() просто скрывает окно, а не закрывает.
-		termWinStage.hide();
-	}
-	
 	public void hideWindow(){
 		termWinStage.hide();
 	}
@@ -73,6 +68,10 @@ public class TermWindowClass extends Application implements InputEventListener {
 	@Override
 	public void dataArrived(InputEvent inputE) {
 		termWinCtrl.addDataToTerminal(inputE.getInputContents());
+	}
+
+	public void openSerialPort(){
+		programCoreRef.openChosenPort();
 	}
 	
 	public static void main(String[] args) {

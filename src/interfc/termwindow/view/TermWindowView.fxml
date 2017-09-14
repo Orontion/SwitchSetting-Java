@@ -4,20 +4,28 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
 <BorderPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfc.termwindow.view.TermWindowController">
    <center>
-      <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TextArea fx:id="txtAreaTerminal" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </TextArea>
    </center>
    <bottom>
-      <Button fx:id="butClose" mnemonicParsing="false" onMouseClicked="#closeForm" text="Закрыть" BorderPane.alignment="CENTER_RIGHT">
+      <HBox alignment="BOTTOM_RIGHT" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="butOpenSerialPort" mnemonicParsing="false" onMouseClicked="#openSerialPort" text="Открыть порт" />
+            <Button fx:id="butClose" mnemonicParsing="false" onMouseClicked="#closeForm" text="Закрыть" />
+         </children>
          <BorderPane.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="10.0" top="10.0" />
          </BorderPane.margin>
-      </Button>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </HBox>
    </bottom>
 </BorderPane>
