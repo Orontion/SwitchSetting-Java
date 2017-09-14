@@ -42,6 +42,7 @@ public class ConfigurationCore {
 		mainFileParcer = new FileParcer("e:/Saves"); //
 		serialPortInteractor = new SerialPortClass();
 		serialPortInputCont = new InputContainer();
+		serialPortInteractor.setInputContainerRef(serialPortInputCont);
 	}
 	
 	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаёт исключение ===============================================================
@@ -83,14 +84,21 @@ public class ConfigurationCore {
 		serialPortInteractor.chooseSerialPortSpeed(chosedSpeed);
 	}
 	
+	//Открываем COM-порт и начинаем с ним работать
+	public void openChosenPort(){
+		serialPortInteractor.startWork();
+	}
+	
 	//Добавляем Listener для получения входящей информации с порта =============================================================================================================================
 	public void addSerialPortInputListener(InputEventListener inputListener){
 		serialPortInputCont.addListener(inputListener);
 	}
 	
+	//Удаляем Listener ===============================================================================================================================
 	public void removeSerialPortInputListener(InputEventListener inputListener){
 		serialPortInputCont.removeListener(inputListener);
 	}
+	
 	
 	public String getAllSerialPortData(){
 		return serialPortInputCont.getAllInputData();

@@ -21,6 +21,8 @@ public class MainWindowClass extends Application {
 	ConfigurationCore programCore = new ConfigurationCore();
 	//Stage для отображения окна
 	Stage mainWindowStage;
+	//Ссылка на объект окна терминала
+	TermWindowClass termWindow;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
@@ -53,6 +55,14 @@ public class MainWindowClass extends Application {
 		mainWindowStage.setMinHeight(mainScene.getHeight());
 		mainWindowStage.setMinWidth(mainScene.getWidth());
 		mainWindowStage.show();
+		
+		termWindow = new TermWindowClass(programCore);
+		//Создаём окно терминала
+		try {
+			termWindow.start(mainWindowStage);
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot start terminal window", e);
+		}
 	}
 	
 	//Метод отображения окна с настройками =======================================================================
@@ -70,15 +80,7 @@ public class MainWindowClass extends Application {
 	
 	//Метод отображения окна терминала ===========================================================================
 	public void showTermWindow(){
-		//Новый объект окна терминала
-		TermWindowClass termWindow = new TermWindowClass(programCore);
-		
-		//Показываем созданное окно
-		try {
-			termWindow.start(mainWindowStage);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot start terminal window", e);
-		}
+		termWindow.showWindow();
 	}
 	
 	//Метод обновления содержимого ComboBox-а со списком конфигурационных файлов =================================

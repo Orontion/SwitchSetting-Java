@@ -10,19 +10,20 @@ public class TermWindowController {
 	private Button butClose;
 	
 	@FXML
+	private Button butOpenSerialPort;
+	
+	@FXML
 	private TextArea txtAreaTerminal;
 	
-	//Метод закрытия окна ==========================================================
+	//Метод закрытия окна ========================================================================================================================
 	@FXML
 	private void closeForm(){
-		termWindowRef.closeWindow();
+		termWindowRef.hideWindow();
 	}
 	
-	public void addDataToTerminal(String newData){
-		//TODO Возможно, этой проверки здесь быть не должно. Добавлена для тестов!
-		if (newData != null){
-			txtAreaTerminal.appendText(newData);
-		}
+	@FXML
+	private void openSerialPort(){
+		termWindowRef.openSerialPort();
 	}
 	
 	//Ссылка на класс-окно
@@ -31,6 +32,14 @@ public class TermWindowController {
 	//Функция получения ссылки на класс-окно
 	public void setTermWindowRef(TermWindowClass termWindowRef){
 		this.termWindowRef = termWindowRef;
+	}
+	
+	//Метод добавления данных в окно терминала
+	public void addDataToTerminal(String newData){
+		//TODO Возможно, этой проверки здесь быть не должно. Добавлена для тестов!
+		if (newData != null){
+			txtAreaTerminal.appendText(newData);
+		}
 	}
 	
 }
