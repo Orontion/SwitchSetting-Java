@@ -2,7 +2,7 @@ package sharedres;
 import java.util.ArrayList;
 import java.util.List;
 
-//Класс для сохранения прочитанных из файла блоков конфигурирования свитча
+//Класс-контейнер для сохранения прочитанных из файла блоков конфигурирования свитча
 public class ConfBlock {
 	//Стандартное значение, по которому будет происходить повторение блока конфигурирования
 	public static final String DEFAULT_ITERATED_BY = "NONE";

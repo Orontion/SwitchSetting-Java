@@ -14,24 +14,29 @@ import swsetexceptions.NoSerialPortsInSystemException;
 import swsetexceptions.SwitchSettingException;
 
 public class ConfigurationCore {
-	//Объекты окон
+	//Ссылки на объекты окон
 	private MainWindowClass mainWindow;
 	private SettingsWindowClass settingsWindow;
 	private TermWindowClass terminalWindow;
+	//Ссылка на парсер конфигурационных файлов
 	private FileParcer mainFileParcer;
+	//Ссылка на класс для работы с последовательным портом
 	private SerialPortClass serialPortInteractor;
+	//Ссылка на контейнер, содержащий ввод информации в последовательный порт
 	private InputContainer serialPortInputCont;
 	
 	//TODO Проверить работу конструктора, оптимизировать по возможности
+	//Конструктор объекта ядра программы =============================================================================================================================
 	public ConfigurationCore() {
 		this.initializeCode();
 	}
 	
+	//Получаем ссылку на главное окно =============================================================================================================================
 	public void setMainWindow(MainWindowClass mainWindow){
 		this.mainWindow = mainWindow;
 	}
 	
-	//Метод, подготавливающий программу к работе
+	//Метод, подготавливающий программу к работе =============================================================================================================================
 	public void initializeCode(){
 		//TODO Загрузка настроек из файла
 		mainFileParcer = new FileParcer("e:/Saves"); //
@@ -78,6 +83,7 @@ public class ConfigurationCore {
 		serialPortInteractor.chooseSerialPortSpeed(chosedSpeed);
 	}
 	
+	//Добавляем Listener для получения входящей информации с порта =============================================================================================================================
 	public void addSerialPortInputListener(InputEventListener inputListener){
 		serialPortInputCont.addListener(inputListener);
 	}

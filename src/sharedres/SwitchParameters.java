@@ -1,5 +1,6 @@
 package sharedres;
 
+//Класс-контейнер, содержащий информацию о параметрах свитча
 public class SwitchParameters {
 	
 	public static final int SWITCH_PORTS_NOT_SET = -1;

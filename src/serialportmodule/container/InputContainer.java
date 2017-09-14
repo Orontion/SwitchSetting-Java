@@ -3,6 +3,7 @@ package serialportmodule.container;
 import java.util.LinkedList;
 import java.util.List;
 
+//Контейнер, который содержит всю информацию, отправляемую в последовательный порт
 public class InputContainer {
 	
 	private String allInputData; //Вся введённая информация. TODO Ограничение на размер введённой информации?
@@ -14,6 +15,7 @@ public class InputContainer {
 		listenerList.add(inputListener);
 	}
 	
+	//Удаление Listner-a =============================================================================================================================
 	public void removeListener(InputEventListener inputListener){
 		listenerList.remove(inputListener);
 	}
