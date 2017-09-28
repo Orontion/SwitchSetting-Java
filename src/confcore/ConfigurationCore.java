@@ -82,7 +82,7 @@ public class ConfigurationCore {
 	//Получение текущего пути к файлам конфигурации ==================================================================================================
 	public String getConFileDir(){
 		//TODO Исключение в случае косячного пути
-		return mainFileParcer.showCurrentConfDirPath();
+		return mainFileParcer.getCurrentConfDirPath();
 	}
 	
 	//Setter для значения ConfFileDir ================================================================================================================
