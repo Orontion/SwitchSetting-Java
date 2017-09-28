@@ -18,7 +18,7 @@ public class ConfigurationCore {
 	private MainWindowClass mainWindow;
 	private SettingsWindowClass settingsWindow;
 	private TermWindowClass terminalWindow;
-	//Ссылка на парсер конфигурационных файлов
+	//Ссылка на объект-парсер конфигурационных файлов
 	private FileParcer mainFileParcer;
 	//Ссылка на класс для работы с последовательным портом
 	private SerialPortClass serialPortInteractor;
@@ -28,39 +28,54 @@ public class ConfigurationCore {
 	//TODO Проверить работу конструктора, оптимизировать по возможности
 	//Конструктор объекта ядра программы =============================================================================================================================
 	public ConfigurationCore() {
+		//Запуск метода подготовки ядра к работе
 		this.initializeCode();
-	}
-	
-	//Получаем ссылку на главное окно =============================================================================================================================
-	public void setMainWindow(MainWindowClass mainWindow){
-		this.mainWindow = mainWindow;
 	}
 	
 	//Метод, подготавливающий программу к работе =============================================================================================================================
 	public void initializeCode(){
 		//TODO Загрузка настроек из файла
-		mainFileParcer = new FileParcer("e:/Saves"); //
+		
+		//Создаём все необходимые объекты
+		mainFileParcer = new FileParcer("e:/Saves");
 		serialPortInteractor = new SerialPortClass();
 		serialPortInputCont = new InputContainer();
+		
+		//Передаём ссылку на объект ввода данных из последовательного порта в класс работы с COM-портом
 		serialPortInteractor.setInputContainerRef(serialPortInputCont);
 	}
+
+	//Получение ссылки на главное окно =============================================================================================================================
+	public void setMainWindow(MainWindowClass mainWindow){
+		this.mainWindow = mainWindow;
+	}
 	
-	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаёт исключение ===============================================================
+	//Метод для получения списка СОМ-портов в системе. Если портов нет - выдаём исключение ===============================================================
 	public List<String> getSerialPortList(){
+		
+		//Т.к. стандартная библиотека JSSC выдаёт список SerialPortList в виде массива String[], 
+		//а остальная программа работает с List, производим преобразование через временный List 
 		List<String> converterList = new ArrayList<>();
+		
+		//Построчно переносим записи из получаемого массива во временный
 		for (String tmpStr : serialPortInteractor.getSerialPortList()){
 			converterList.add(tmpStr);
 		}
 		
+		//Если в итоговом List нет ни одной записи - выдаём исключение 
 		if (converterList.isEmpty()){
 			throw new NoSerialPortsInSystemException("There is no serial ports in system!");
 		}
+		
 		return converterList;
 	}
 	
 	//Получение списка имён конфигурационных файлов ==================================================================================================
 	public List<String> getConfFilesList(){
+		//Перед выдачей списка - просканировать директорию на предмет изменений
+		//TODO Необходимость проверки корректности значения ConfDir?
 		mainFileParcer.scanConfDir();
+
 		return mainFileParcer.showFilesInConfDir();
 	}
 	
@@ -70,36 +85,38 @@ public class ConfigurationCore {
 		return mainFileParcer.showCurrentConfDirPath();
 	}
 	
+	//Setter для значения ConfFileDir ================================================================================================================
 	public void setConFileDir(String newConfDirPath){
 		mainFileParcer.setConfDirPath(newConfDirPath);
 	}
 	
-	//Выбор COM-порта для работы ==================================================================================================
+	//Выбор COM-порта для работы =====================================================================================================================
+	//TODO Возможно, стоит сделат привязку к SerialPortList, чтобы нельзя было выбрать кривой COM-порт
 	public void chooseSerialPort(String serialPortName){
 		serialPortInteractor.chooseSerialPort(serialPortName);
 	}
 	
-	//Выбор скорости работы COM-порта ==================================================================================================
+	//Выбор скорости работы COM-порта ================================================================================================================
 	public void chooseSerialPortSpeed(int chosedSpeed){
 		serialPortInteractor.chooseSerialPortSpeed(chosedSpeed);
 	}
 	
-	//Открываем COM-порт и начинаем с ним работать
+	//Начало работы с COM-портом =====================================================================================================================
 	public void openChosenPort(){
 		serialPortInteractor.startWork();
 	}
 	
-	//Добавляем Listener для получения входящей информации с порта =============================================================================================================================
+	//Добавление Listener-а для получения входящей информации с порта =============================================================================================================================
 	public void addSerialPortInputListener(InputEventListener inputListener){
 		serialPortInputCont.addListener(inputListener);
 	}
 	
-	//Удаляем Listener ===============================================================================================================================
+	//Удаление Listener-а ===============================================================================================================================
 	public void removeSerialPortInputListener(InputEventListener inputListener){
 		serialPortInputCont.removeListener(inputListener);
 	}
 	
-	
+	//Получение всей информации, которая была принята из COM-порта ==================================================================================================
 	public String getAllSerialPortData(){
 		return serialPortInputCont.getAllInputData();
 	}

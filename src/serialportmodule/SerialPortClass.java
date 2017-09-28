@@ -55,6 +55,7 @@ public class SerialPortClass {
 	}
 	
 	//ѕолучение списка последовательных портов в системе ====================================================================================================================
+	//TODO ¬озможно, сменить тип возвращаемого значени€ на List<String>?
 	public String[] getSerialPortList(){
 		portList = SerialPortList.getPortNames();
 		return portList;
