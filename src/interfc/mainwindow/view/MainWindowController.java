@@ -18,7 +18,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
 public class MainWindowController {
+	//Объявления объектов, расположенных на форме
+	
 	@FXML
 	private MenuItem mItShowStgWindow;
 	
@@ -67,6 +70,8 @@ public class MainWindowController {
 	@FXML
 	private Button butShowTermWindow;
 	
+	//Методы-события, активируемые из формы
+		
 	@FXML
 	private void initialize(){
 		//Инициализация объектов для хранения данных
@@ -83,7 +88,7 @@ public class MainWindowController {
 		cmbConfFileSelect.setItems(confFileObsList);
 	}
 	
-	//Метод добавления данных о VLAN из полей в таблицу. В момент добавления производится проверка корректности данных
+	//Метод добавления данных о VLAN из полей в таблицу. В момент добавления производится проверка корректности данных ============================================================
 	@FXML
 	private void addVlanToTable(){
 		if (vlanInputCheck()){
@@ -98,7 +103,7 @@ public class MainWindowController {
 		}
 	}
 	
-	//Метод активации кнопки удаления, когда происходит выбор строчки в таблице VLAN ====================
+	//Метод активации кнопки удаления, когда происходит выбор строчки в таблице VLAN ================================================================================
 	@FXML
 	private void butDeleteActivation(){
 		//TODO Активация кнопки удаления не только при щелчке мыши
@@ -107,7 +112,7 @@ public class MainWindowController {
 		}
 	}
 	
-	//Метод удаления выбранного VLAN вместе с настройками из таблицы ====================================
+	//Метод удаления выбранного VLAN вместе с настройками из таблицы ================================================================================================
 	@FXML
 	private void deleteRow(){
 		vlanList.remove(tableVlanStg.getSelectionModel().getSelectedIndex());
@@ -115,9 +120,11 @@ public class MainWindowController {
 		butDeleteRow.setDisable(true);
 	}
 	
-	//Метод очистки всех значений, которые были введены =================================================
+	//Метод очистки всех значений, которые были введены =============================================================================================================
 	@FXML
 	private void clearAll(){
+		
+		//Диалоговое окно с подтверждением
 		if (JOptionPane.showConfirmDialog(null,"Подтверждение", "Очистить все настройки?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 			txtIP.clear();
 			txtNetmask.clear();
@@ -130,17 +137,19 @@ public class MainWindowController {
 		}
 	}
 	
-	//Показ окна настроек====================================================================
+	//Показ окна настроек================================================================================================================================
 	@FXML
 	private void showSettingsWindow(){
 		mainWindowRef.showSettingsWindow();
 	}
 	
-	//Показ окна терминала====================================================================
+	//Показ окна терминала================================================================================================================================
 	@FXML
 	private void showTermWindow(){
 		mainWindowRef.showTermWindow();
 	}
+	
+	//Внутренние объекты класса
 	
 	//ObservableList объектов типа VlanContaner, хранит настройки по VLANам
 	private ObservableList<VlanContainer> vlanList;
@@ -151,12 +160,12 @@ public class MainWindowController {
 	//Ссылка на объект-окно
 	private MainWindowClass mainWindowRef;
 	
-	//Получение ссылки на объект главного окна===============================================================
+	//Получение ссылки на объект главного окна=======================================================================================================
 	public void setMainWindowRef(MainWindowClass mainWindowRef){
 		this.mainWindowRef = mainWindowRef;
 	}
 	
-	//Функция для проверки корректности вводимого VLAN ======================================================
+	//Функция для проверки корректности вводимого VLAN ==============================================================================================
 	private Boolean vlanInputCheck(){
 		//Проверка имени VLAN
 		if (txtVlanName.getText().isEmpty()){
@@ -186,7 +195,7 @@ public class MainWindowController {
 			}
 		}
 		
-		//Проверка, создаваемый VLAN имеет настроенные порты
+		//Проверка, что создаваемый VLAN содержит настройки для портов
 		if (txtVlanTgd.getText().isEmpty() && txtVlanUtgd.getText().isEmpty()){
 			showMessageWindow("Должен быть настроен хотя бы один тэгированный или нетэгированный порт!");
 			return false;

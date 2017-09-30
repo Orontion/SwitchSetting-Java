@@ -57,7 +57,7 @@ public class MainWindowClass extends Application {
 		mainWindowStage.show();
 		
 		termWindow = new TermWindowClass(programCore);
-		//Создаём окно терминала
+		//Создаём окно терминала, если не удаётся - вылетает исключение
 		try {
 			termWindow.start(mainWindowStage);
 		} catch (Exception e) {
