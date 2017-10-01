@@ -35,7 +35,7 @@ public class MainWindowClass extends Application {
 		mainWindowLoader = new FXMLLoader();
 		mainWindowLoader.setLocation(getClass().getResource("view/MainWindowView.fxml"));
 			
-		//Загружаем полученный файл в объект Parent
+		//Загружаем полученный файл в объект Parent (родительский объект для всей остальной формы)
 		Parent mainView = mainWindowLoader.load();
 		
 		//Получаем ссылку на контроллер интерфейса и даём ему ссылку на этот объект

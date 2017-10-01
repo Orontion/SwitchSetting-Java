@@ -149,7 +149,7 @@ public class MainWindowController {
 		mainWindowRef.showTermWindow();
 	}
 	
-	//Внутренние объекты класса
+	//Внутренние объекты и функции класса
 	
 	//ObservableList объектов типа VlanContaner, хранит настройки по VLANам
 	private ObservableList<VlanContainer> vlanList;
