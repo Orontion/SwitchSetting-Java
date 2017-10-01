@@ -44,7 +44,7 @@ public class SettingsWindowClass extends Application {
 		//Загружаем полученный файл в объект Parent (родительский объект для всей остальной формы)
 		Parent stgView = stgWinLoader.load();
 		
-		//Получаем ссылку на контроллер интерфейса и даём ему ссылку на этот объект
+		//Получение ссылки на объект-контроллер окна, и передача этому объекту ссылки на текущий объект-окно
 		stgWinCtrl = stgWinLoader.getController();
 		stgWinCtrl.setSettingsWindowRef(this);
 		

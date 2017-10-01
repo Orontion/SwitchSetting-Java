@@ -38,7 +38,7 @@ public class MainWindowClass extends Application {
 		//Загружаем полученный файл в объект Parent (родительский объект для всей остальной формы)
 		Parent mainView = mainWindowLoader.load();
 		
-		//Получаем ссылку на контроллер интерфейса и даём ему ссылку на этот объект
+		//Получение ссылки на объект-контроллер окна, и передача этому объекту ссылки на текущий объект-окно
 		mainWindowCtrl = mainWindowLoader.getController();
 		mainWindowCtrl.setMainWindowRef(this);
 		
