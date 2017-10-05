@@ -15,24 +15,30 @@ public class SerialPortClass {
 	
 	//Inner class-listener для обработки событий получения данных с порта
 	private class SerialPortListener implements SerialPortEventListener { 
+		
+		//Переопределение встроенного метода
 	    public void serialEvent (SerialPortEvent event) {
+	    	//Если событие вызвано получением данных, и эти данные в принципе присутствуют...
 	        if (event.isRXCHAR () && event.getEventValue () > 0){ 
 	            try {
-	                      String data = workingPort.readString(event.getEventValue()); 
-	                      printOutData(data);
-	                   }
-	            catch (SerialPortException ex) {
+	            	//...считываем из порта имеющиеся данные и выводим их через метод prinOutData
+	            	String data = workingPort.readString(event.getEventValue()); 
+	            	printOutData(data);
+	            } catch (SerialPortException ex) {
 	                      ex.printStackTrace();
 	            }
 	        }
 	    }
 	} 
 	
-	private String portList[];
-	private String selectedPort;
-	private SerialPort workingPort;
-	private SerialPortListener innerPortListener = new SerialPortListener();
-	private InputContainer inputContRef;
+	
+	private String portList[];													//Список портов (их имена)
+	private String selectedPort;												//Имя выбранного порта
+	private SerialPort workingPort;												//Объект для работы с COM-портом
+	private SerialPortListener innerPortListener = new SerialPortListener();	//Listener для контроля входящих данных
+	private InputContainer inputContRef;										//Контейнер, содержащий всю информацию, которая приходила с COM-порта
+	
+	//Переменные с настройками порта
 	int portSpeed = -1;
 	int portDataBits = -1;
 	int portStopBits = -1;
@@ -41,13 +47,17 @@ public class SerialPortClass {
 	//Открытие порта и запуск потока чтения через Listener
 	public void startWork(){
 		try {
-			workingPort = new SerialPort(selectedPort);
-			workingPort.openPort();
-			System.out.println("port operned!");
+			//TODO вставить проверку того, что был выбран какой-либо порт
+	
+			workingPort = new SerialPort(selectedPort);		//Создаём новый объект для работы, используя имя выбранного порта			
+			workingPort.openPort();								
+			System.out.println("port operned!"); //TODO Убрать
+			
+			//TODO Изменить параметры с хардкодных на изменяемые
 			//TODO Вставить обработку ошибок ввода параметров порта
 			workingPort.setParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-			workingPort.addEventListener(innerPortListener);
-			System.out.println("listener added!");
+			workingPort.addEventListener(innerPortListener);			//Добавляем в порт Listener входящих данных
+			System.out.println("listener added!");		 //TODO Убрать
 		} catch (SerialPortException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,10 +98,12 @@ public class SerialPortClass {
 		portParity = chosedParity;
 	}
 	
+	//Getter имени выбранного порта  ====================================================================================================================
 	public String getSelectedPort(){
 		return selectedPort;
 	}
 	
+	//Метод обработки полученных Listener-ом данных ====================================================================================================================
 	public void printOutData(String dataToPrint){
 		inputContRef.addData(dataToPrint);
 	}
@@ -127,6 +139,7 @@ public class SerialPortClass {
 		this.inputContRef = inputCont;
 	}
 	
+	//Метод main для тестов модуля ====================================================================================================================
 	public static void main(String args[]){
 		SerialPortClass testObj = new SerialPortClass();
 		
@@ -159,5 +172,3 @@ public class SerialPortClass {
 		
 	}	
 }
-
-
