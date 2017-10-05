@@ -35,10 +35,10 @@ public class MainWindowClass extends Application {
 		mainWindowLoader = new FXMLLoader();
 		mainWindowLoader.setLocation(getClass().getResource("view/MainWindowView.fxml"));
 			
-		//Загружаем полученный файл в объект Parent
+		//Загружаем полученный файл в объект Parent (родительский объект для всей остальной формы)
 		Parent mainView = mainWindowLoader.load();
 		
-		//Получаем ссылку на контроллер интерфейса и даём ему ссылку на этот объект
+		//Получение ссылки на объект-контроллер окна, и передача этому объекту ссылки на текущий объект-окно
 		mainWindowCtrl = mainWindowLoader.getController();
 		mainWindowCtrl.setMainWindowRef(this);
 		
@@ -57,7 +57,7 @@ public class MainWindowClass extends Application {
 		mainWindowStage.show();
 		
 		termWindow = new TermWindowClass(programCore);
-		//Создаём окно терминала
+		//Создаём окно терминала, если не удаётся - вылетает исключение
 		try {
 			termWindow.start(mainWindowStage);
 		} catch (Exception e) {
