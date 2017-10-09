@@ -1,9 +1,11 @@
 package interfc.termwindow.view;
 
 import interfc.termwindow.TermWindowClass;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
 
 public class TermWindowController {
 	////ќбъ€влени€ объектов, расположенных на форме и методов, запускаемых с формы
@@ -27,6 +29,15 @@ public class TermWindowController {
 	@FXML
 	private void openSerialPort(){
 		termWindowRef.openSerialPort();
+	}
+	
+	//ћетод реагировани€ на нажати€ клавиш ========================================================================================================================
+	@FXML
+	private void typeKey(KeyEvent e){
+		String Ent = System.getProperty("line.separator");
+		if (Ent.lastIndexOf(e.getCharacter()) != -1){
+			System.out.println("Enter was pressed!");
+		}
 	}
 	
 	//¬нутренние объекты и методы класса
