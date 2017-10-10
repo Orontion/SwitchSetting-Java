@@ -1,7 +1,6 @@
 package interfc.termwindow.view;
 
 import interfc.termwindow.TermWindowClass;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -34,14 +33,23 @@ public class TermWindowController {
 	//Метод реагирования на нажатия клавиш ========================================================================================================================
 	@FXML
 	private void typeKey(KeyEvent e){
-		String Ent = System.getProperty("line.separator");
-		if (Ent.lastIndexOf(e.getCharacter()) != -1){
-			System.out.println("Enter was pressed!");
+		
+		//Если пользователь увёл курсор за пределы собственного ввода - его принудительно возвращают в конец поля ввода
+		//TODO Не успевает перехватить Enter, текст уезжает
+		if (txtAreaTerminal.getCaretPosition() < cursPosition) txtAreaTerminal.positionCaret(txtAreaTerminal.getLength());
+		
+		//По нажатию Enter выводим в COM-порт весь ввод от последней позиции курсора до конца текстового поля, и переводим позицию курсора в конец строки
+		if (newLineChar.lastIndexOf(e.getCharacter()) != -1){
+			System.out.println(txtAreaTerminal.getText(cursPosition, txtAreaTerminal.getLength()));
+			termWindowRef.throwDataToSerial(txtAreaTerminal.getText(cursPosition, txtAreaTerminal.getLength()));
+			cursPosition = txtAreaTerminal.getLength();
 		}
 	}
 	
 	//Внутренние объекты и методы класса
 	
+	private String newLineChar = System.getProperty("line.separator");			//Строка, хранящая символы перехода на новую строк											
+	private int cursPosition = 0;					//Пометка, где находится начало команд, вводимых пользователем
 	
 	//Ссылка на класс-окно
 	public TermWindowClass termWindowRef;
@@ -56,6 +64,7 @@ public class TermWindowController {
 		//TODO Возможно, этой проверки здесь быть не должно. Добавлена для тестов!
 		if (newData != null){
 			txtAreaTerminal.appendText(newData);
+			cursPosition = txtAreaTerminal.getLength();
 		}
 	}
 }

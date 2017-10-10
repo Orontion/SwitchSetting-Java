@@ -55,7 +55,7 @@ public class SerialPortClass {
 			
 			//TODO Изменить параметры с хардкодных на изменяемые
 			//TODO Вставить обработку ошибок ввода параметров порта
-			workingPort.setParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+			workingPort.setParams(portSpeed, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 			workingPort.addEventListener(innerPortListener);			//Добавляем в порт Listener входящих данных
 			System.out.println("listener added!");		 //TODO Убрать
 		} catch (SerialPortException e) {
@@ -104,6 +104,7 @@ public class SerialPortClass {
 	}
 	
 	//Метод обработки полученных Listener-ом данных ====================================================================================================================
+	//TODO Многопоточность?
 	public void printOutData(String dataToPrint){
 		inputContRef.addData(dataToPrint);
 	}

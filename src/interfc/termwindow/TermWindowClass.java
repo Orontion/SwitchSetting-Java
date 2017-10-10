@@ -86,6 +86,11 @@ public class TermWindowClass extends Application implements InputEventListener {
 		programCoreRef.openChosenPort();
 	}
 	
+	//Метод ввода строки в COM-порт ============================================================================================================================================================
+	public void throwDataToSerial(String dataToThrow){
+		programCoreRef.throwDataToSerial(dataToThrow);
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

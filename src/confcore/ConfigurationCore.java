@@ -121,6 +121,11 @@ public class ConfigurationCore {
 		return serialPortInputCont.getAllInputData();
 	}
 	
+	//Метод ввода строки в COM-порт ============================================================================================================================================================
+	public void throwDataToSerial(String dataToThrow){
+		serialPortInteractor.enterLine(dataToThrow);
+	}
+	
 	public static void main(String[] args) {
 		
 	}
